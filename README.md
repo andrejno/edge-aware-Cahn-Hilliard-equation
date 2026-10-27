@@ -1,7 +1,5 @@
 # CHPM
 
-Martin Ehler · Andrej Novak
-
 Research website for *Analysis and numerical evaluation of an edge-aware Cahn–Hilliard equation for binary image inpainting*.
 
 ## Website
