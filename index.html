@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Numerical results for edge-aware Cahn–Hilliard inpainting. Explore all synthetic and retinal reconstructions, coefficient controls and convergence results.">
+  <meta name="theme-color" content="#167367">
+  <title>CHPM · Edge-aware Cahn–Hilliard inpainting</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/data/results.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to results</a>
+  <header class="site-header">
+    <a class="brand" href="#"><span class="brand-symbol">C<span>H</span></span><span>CHPM<span class="brand-sub">RESEARCH</span></span></a>
+    <nav aria-label="Main navigation"><a href="#reconstructions">Reconstructions</a><a href="#results">Results</a><a href="#numerics">Numerics</a><a class="nav-notebook" href="notebooks/chpm_results.html">Notebook <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="main">
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">PHASE-FIELD IMAGE RECONSTRUCTION</p>
+        <h1>Edge-aware<br>Cahn–Hilliard<br><em>inpainting.</em></h1>
+        <p class="lead">An evolving interfacial coefficient for the completion of binary structures.</p>
+        <p class="authors">Martin Ehler <span>·</span> Andrej Novak</p>
+        <div class="hero-links"><a class="button" href="#reconstructions">Explore reconstructions <span aria-hidden="true">↓</span></a><a class="text-link" href="notebooks/chpm_results.html">Numerical notebook <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <figure class="hero-figure">
+        <figcaption><span>Junction reconstruction</span><span class="mono">junctions_02</span></figcaption>
+        <div class="hero-panels">
+          <div><div class="hero-image"><img src="assets/images/test_junctions_02_observed.png" alt="Observed corner with a rectangular missing region"><img class="mask-layer" src="assets/images/test_junctions_02_mask.svg" alt=""></div><span>Observed</span><small>Missing region in gray</small></div>
+          <div><div class="hero-image"><img src="assets/images/test_junctions_02_CH.png" alt="Conventional Cahn–Hilliard corner reconstruction"><img class="mask-layer" src="assets/images/test_junctions_02_mask.svg" alt=""></div><span>CH</span><small>Dice <strong>0.7273</strong></small></div>
+          <div><div class="hero-image"><img src="assets/images/test_junctions_02_CHPM.png" alt="Adaptive CHPM corner reconstruction"><img class="mask-layer" src="assets/images/test_junctions_02_mask.svg" alt=""></div><span class="teal">CHPM</span><small>Dice <strong class="teal">0.8235</strong></small></div>
+        </div>
+        <div class="figure-foot"><span class="outline-key"></span> Missing-region boundary <span class="right">Threshold at zero</span></div>
+      </figure>
+    </section>
+    <section class="findings wrap" aria-label="Selected findings">
+      <div><p class="finding-number" id="junction-gain">+0.0304</p><h2>Junctions</h2><p>Mean Dice difference from CH</p></div>
+      <div><p class="finding-number" id="multiscale-gain">+0.0081</p><h2>Multiscale structures</h2><p>Mean Dice difference from CH</p></div>
+      <div><p class="finding-number" id="update-gain">+0.0773</p><h2>Coefficient evolution</h2><p>Retinal Dice difference from Frozen</p></div>
+      <div class="study-count"><strong>480</strong><span>reconstructions</span><p>24 synthetic cases · 56 retinal cases<br>6 methods</p></div>
+    </section>
+    <section class="section wrap" id="reconstructions">
+      <div class="section-heading"><div><p class="eyebrow">01 / RECONSTRUCTIONS</p><h2>Compare every test case.</h2></div><p>Drag the divider to compare methods.<br>Scores refer to the missing region.</p></div>
+      <div class="explorer-controls">
+        <label>Dataset<select id="case-dataset"><option value="synthetic">Synthetic geometries</option><option value="retina">Retinal vessel masks</option></select></label>
+        <label class="case-select">Case<select id="case-select"></select></label>
+        <label>Left method<select id="method-left"></select></label>
+        <label>Right method<select id="method-right"></select></label>
+        <div class="case-buttons"><button id="previous-case" aria-label="Previous case">←</button><button id="next-case" aria-label="Next case">→</button></div>
+      </div>
+      <div class="explorer">
+        <aside class="context-images"><figure><img id="observed-image" alt="Observed phase field"><figcaption>Observed</figcaption></figure><figure><img id="reference-image" alt="Reference segmentation"><figcaption id="reference-caption">Reference</figcaption></figure></aside>
+        <div class="comparison-column">
+          <div class="comparison" id="comparison">
+            <img id="image-right" class="comparison-image" alt="Right reconstruction">
+            <img id="error-right" class="comparison-image error-layer" alt="">
+            <div class="left-layer" id="left-layer"><img id="image-left" class="comparison-image" alt="Left reconstruction"><img id="error-left" class="comparison-image error-layer" alt=""></div>
+            <img id="mask-image" class="comparison-image mask-layer" alt="Missing-region boundary">
+            <span class="comparison-tag left-tag" id="left-tag">CH</span><span class="comparison-tag right-tag" id="right-tag">CHPM</span>
+            <div class="divider" id="divider"><span aria-hidden="true">↔</span></div>
+            <input id="compare-range" type="range" min="0" max="100" value="50" aria-label="Comparison divider position">
+          </div>
+          <div class="viewer-options"><label><input id="show-mask" type="checkbox" checked> Missing region</label><label><input id="show-errors" type="checkbox"> Reconstruction errors</label><span id="error-legend" hidden><i class="false-positive"></i> Added <i class="false-negative"></i> Missing</span></div>
+        </div>
+        <aside class="score-panel"><p class="eyebrow" id="case-title">JUNCTIONS_02</p><div id="case-scores" aria-live="polite"></div><p class="case-detail" id="case-detail"></p><a id="download-field" class="text-link" download>Phase field <span aria-hidden="true">↓</span></a></aside>
+      </div>
+    </section>
+    <section class="section shaded" id="results"><div class="wrap">
+      <div class="section-heading"><div><p class="eyebrow">02 / RECONSTRUCTION SCORES</p><h2>Geometry and observation error.</h2></div><a class="text-link" href="assets/data/all_case_metrics.csv" download>All case scores · CSV <span aria-hidden="true">↓</span></a></div>
+      <div class="result-layout">
+        <div class="family-panel"><div class="panel-heading"><h3>Synthetic families</h3><label class="compact-label">Compare with<select id="family-comparator"></select></label></div><div id="family-chart" class="family-chart"></div><p class="plot-note"><span class="legend-square chpm"></span> CHPM <span class="legend-square comparator" id="comparator-key"></span> <span id="comparator-label">CH</span><span class="right">6 cases per family</span></p></div>
+        <div class="mean-panel"><div class="panel-heading"><h3>Overall means</h3><label class="compact-label">Dataset<select id="summary-dataset"><option value="synthetic">Synthetic</option><option value="retina">Retinal · AH</option><option value="retina_VK">Retinal · VK</option></select></label></div><div class="table-scroll" id="summary-table"></div><p class="plot-note" id="summary-note">24 synthetic test cases</p></div>
+      </div>
+      <div class="paired-panel"><div class="panel-heading"><h3>Paired comparisons</h3><label class="compact-label">Dataset<select id="contrast-dataset"><option value="summary_synthetic">Synthetic</option><option value="summary_retina_AH">Retinal · AH</option><option value="summary_retina_VK">Retinal · VK</option></select></label></div><div id="contrast-chart"></div><p class="plot-note">CHPM minus comparator · 95% percentile bootstrap intervals · 20,000 resamples</p></div>
+      <details class="data-details"><summary>Complete reconstruction scores <span>80 cases × 6 methods</span></summary><div class="inline-controls"><label>Dataset<select id="complete-dataset"><option value="synthetic">Synthetic</option><option value="retina">Retinal</option></select></label><label>Outcome<select id="complete-metric"><option value="masked_dice">Masked Dice</option><option value="masked_cldice">Masked clDice</option><option value="masked_rmse">Masked RMSE</option><option value="masked_iou">Masked IoU</option><option value="boundary_f1">Boundary F1</option></select></label></div><div class="table-scroll tall-table" id="complete-table"></div></details>
+    </div></section>
+    <section class="section wrap" id="coefficient">
+      <div class="section-heading"><div><p class="eyebrow">03 / INTERFACIAL COEFFICIENT</p><h2>Adaptation during reconstruction.</h2></div><p>The coefficient decreases with the<br>smoothed gradient magnitude.</p></div>
+      <div class="coefficient-layout"><div class="equation-panel">
+        <div class="equation">∂<sub>t</sub>u = Δw + λ(f − u)</div><div class="equation">w = 4τ(u³ − u) − τ⁻¹∇·(a[u]∇u)</div><div class="equation coefficient-equation">a[u] = γ + <span class="fraction"><span>1 − γ</span><span>1 + |∇S<sub>ε</sub>u|² / K²</span></span></div>
+        <div class="coefficient-sliders"><label>γ <output id="gamma-value">0.30</output><input id="gamma" type="range" min="0.05" max="1" value="0.3" step="0.01" aria-label="Diffusivity floor gamma"></label><label>K <output id="k-value">0.15</output><input id="edge-k" type="range" min="0.05" max="0.8" value="0.15" step="0.01" aria-label="Gradient scale K"></label></div><div id="coefficient-chart"></div>
+      </div><div class="coefficient-results"><h3>Coefficient controls</h3><div class="table-scroll" id="coefficient-table"></div><p class="small-copy">Updating the coefficient increases mean Dice over the initial frozen field on both datasets.</p><div class="profile-title"><h3>Planar interface width</h3><select id="profile-dataset" aria-label="Interface calibration dataset"><option value="synthetic">Synthetic</option><option value="retina">Retinal</option></select></div><div id="profile-chart"></div><p class="plot-note" id="profile-note"></p></div></div>
+      <div class="theory-strip"><span>Global existence and uniqueness</span><p>Fixed smoothing scale and positive diffusivity floor in two and three dimensions.</p><a href="notebooks/chpm_results.html#discrete-mass-balance-and-convergence">Mass balance <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section class="section shaded"><div class="wrap"><div class="section-heading"><div><p class="eyebrow">04 / RETINAL VESSEL MASKS</p><h2>Scratch width and reference annotation.</h2></div><label class="compact-label">Reference<select id="retina-reference"><option value="AH">AH</option><option value="VK">VK</option></select></label></div><div class="retina-layout"><div><h3>Source-image means</h3><div id="retina-chart"></div></div><div><h3>Scratch width</h3><div id="width-chart"></div><p class="plot-note">Two crops per source image at each width</p><h3 class="noise-title">Noisy synthetic observations</h3><div class="table-scroll" id="noise-table"></div><p class="plot-note">Clean-reference RMSE on observed pixels · 6 cases</p></div></div></div></section>
+    <section class="section wrap" id="numerics">
+      <div class="section-heading"><div><p class="eyebrow">05 / NUMERICAL RESULTS</p><h2>Parameters, refinement and convergence.</h2></div><a class="text-link" href="notebooks/chpm_results.html">Full numerical notebook <span aria-hidden="true">↗</span></a></div>
+      <details class="data-details" open><summary>Selected parameters<span>Development selection</span></summary><div class="table-scroll" id="parameters-table"></div><p class="plot-note">λ₀ = 5 · ε = 1 pixel · n = 1 · Δt = 0.1</p><details class="nested-details"><summary>Complete development rankings</summary><div class="table-scroll tall-table" id="tuning-table"></div><a class="text-link" href="assets/data/development_selection.csv" download>Development scores · CSV ↓</a></details></details>
+      <details class="data-details"><summary>Time-step and spatial refinement<span>CH and CHPM</span></summary><div class="inline-controls"><label>Comparison<select id="refinement-select"><option value="synthetic-time">Synthetic · time step</option><option value="synthetic-grid">Synthetic · grid spacing</option><option value="retina-time">Retinal · time step</option></select></label></div><div class="table-scroll" id="refinement-table"></div><p class="plot-note" id="refinement-note"></p><h4>Further time-step refinement</h4><div class="table-scroll" id="extended-table"></div></details>
+      <details class="data-details"><summary>Observed-region errors and TV accuracy<span>Continuous phase fields</span></summary><div class="table-scroll" id="diagnostics-table"></div><h4>TV iteration</h4><div class="table-scroll" id="tv-table"></div><div class="small-equation">g<sub>rel</sub> = max{J(u) − D(p), 0} / max{1, J(u)}</div></details>
+      <details class="data-details"><summary>Discrete mass balance and convergence<span>Spatial and temporal tests</span></summary><div class="convergence-layout"><div><h3>Manufactured solution</h3><div id="spatial-chart"></div><div class="table-scroll" id="spatial-table"></div></div><div><h3>Temporal convergence</h3><div id="temporal-chart"></div><div class="table-scroll" id="temporal-table"></div></div></div><div class="verification-numbers"><div><strong>2.22 × 10⁻¹⁶</strong><span>Maximum RHS difference</span></div><div><strong>9.97 × 10⁻¹⁷</strong><span>Mean-preservation error</span></div><div><strong>4.64 × 10⁻¹¹</strong><span>Tolerance-halving L² difference</span></div></div><p class="plot-note">The numerical source defines the test fields, grids, forcing and integration tolerances.</p></details>
+    </section>
+    <section class="notebook-section"><div class="wrap notebook-inner"><div><p class="eyebrow">CODE & RESULTS</p><h2>The complete numerical record.</h2><p>An executed notebook with the score tables, figures and all 480 reconstructions.</p></div><div class="notebook-links"><a class="button light" href="notebooks/chpm_results.html">Read the notebook <span aria-hidden="true">↗</span></a><a href="notebooks/chpm_results.ipynb" download>Download .ipynb <span aria-hidden="true">↓</span></a><a href="assets/data/all_case_metrics.csv" download>Download case scores <span aria-hidden="true">↓</span></a></div></div></section>
+  </main>
+  <footer class="wrap"><p><strong>Martin Ehler · Andrej Novak</strong><br>Analysis and numerical evaluation of an edge-aware Cahn–Hilliard equation for binary image inpainting.</p><p>Retinal images and annotations: <a href="http://cecas.clemson.edu/~ahoover/stare/probing/">STARE</a><br>Hoover, Kouznetsova & Goldbaum, IEEE TMI 19(3), 203–210 (2000).</p></footer>
+</body>
+</html>
